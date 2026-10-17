@@ -1,0 +1,64 @@
+
+name: Build SkyDelta 3D Android APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Extract project ZIP
+        run: |
+          unzip -o SkyDelta_3D_Rebuild.zip
+          test -f SkyDelta_3D_Rebuild/package.json
+          test -f SkyDelta_3D_Rebuild/index.html
+
+      - name: Install dependencies
+        working-directory: SkyDelta_3D_Rebuild
+        run: npm install --no-audit --no-fund
+
+      - name: Build game
+        working-directory: SkyDelta_3D_Rebuild
+        run: npm run build
+
+      - name: Generate Android project
+        working-directory: SkyDelta_3D_Rebuild
+        run: npx cap add android
+
+      - name: Sync Android project
+        working-directory: SkyDelta_3D_Rebuild
+        run: npx cap sync android
+
+      - name: Build APK
+        working-directory: SkyDelta_3D_Rebuild/android
+        run: ./gradlew --no-daemon assembleDebug
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SkyDelta-3D-Early-Access-APK
+          path: SkyDelta_3D_Rebuild/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
