@@ -1,0 +1,7 @@
+{
+  "appId": "com.neeljhoralo.skydelta",
+  "appName": "SkyDelta 3D",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {"androidScheme": "https"}
+}

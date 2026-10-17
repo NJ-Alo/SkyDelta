@@ -1,0 +1,9 @@
+{
+  "name": "skydelta-3d-flight-combat",
+  "version": "0.2.0",
+  "private": true,
+  "description": "SkyDelta 3D mobile flight-combat prototype by Neeljhor Alo",
+  "scripts": {"dev":"vite --host 0.0.0.0", "build":"vite build", "preview":"vite preview --host 0.0.0.0"},
+  "dependencies": {"@capacitor/android":"^7.4.3", "@capacitor/core":"^7.4.3", "three":"^0.180.0"},
+  "devDependencies": {"@capacitor/cli":"^7.4.3", "vite":"^6.3.0"}
+}
